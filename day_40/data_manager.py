@@ -1,0 +1,36 @@
+import requests
+class DataManager:
+    def __init__(self):
+        self.sheety_endpoint = 'https://api.sheety.co/bd4984be7623b2068281ac82f86d05d8/flightDeals/prices'
+        self.sheety_endpoint_user_post = 'https://api.sheety.co/bd4984be7623b2068281ac82f86d05d8/flightDeals/users'
+        self.header = {
+            'apikey': 'sUP3L0QCyMDmA2HILytggxSFq2bAgW59'
+        }
+
+    def get_iata_codes_from_tequila(self, sheety_data):
+        for flight in sheety_data:
+            params = {
+                'term': flight['city']
+            }
+            response = requests.get(url='https://api.tequila.kiwi.com/locations/query', params=params, headers=self.header)
+            flight['iataCode'] = response.json()['locations'][0]['code']
+
+        return sheety_data
+    def set_iata_codes_in_sheety(self, sheety_data):
+
+        for x in range(len(sheety_data)):
+            price_dict = {
+                'price': sheety_data[x]
+            }
+            requests.put(url=f'{self.sheety_endpoint}/{price_dict["price"]["id"]}', json=price_dict)
+
+    def set_user(self, user_data):
+        user_info = {
+            'user': user_data
+        }
+        response = requests.post(url=self.sheety_endpoint_user_post, json=user_info)
+        print(response.json())
+
+    def get_users(self):
+        return requests.get(url=self.sheety_endpoint_user_post).json()
+

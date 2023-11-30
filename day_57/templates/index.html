@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Website</title>
+</head>
+<body>
+    <h1>Random number: {{random_number}}</h1>
+    <h1>Hey {{name}}</h1>
+    <h1>I think you are {{user_info["gender"]}}</h1>
+    <a href="{{ url_for('blog', num=3) }}">Go to blog</a>
+</body>
+<footer>
+    <h3>Copyright: {{act_year}}</h3>
+</footer>
+</html>
